@@ -126,6 +126,34 @@ function timer(seconds) {
       pauseBtn.classList?.add("play");
       return;
     }
+    // 남은시간이 전체 시간의 절반일 때 알려주기!
+    if ((timeLeft / wholeTime) * 100 === 50 && timeLeft > 10) {
+      let remainMS;
+      //분 단위가 남았으면
+      if (timeLeft > 60) {
+        let remainM = Math.floor(timeLeft / 60);
+        let remainS = timeLeft - remainM * 60;
+        remainMS = remainM + "분" + remainS + "초";
+        //초 단위가 남았으면
+      } else {
+        remainMS = timeLeft + "초";
+      }
+      speech(`활동시간의 반이 지났어요. ${remainMS} 남았어요.`);
+    } else {
+      //1분 남았으면
+      if (timeLeft === 60) {
+        speech(`활동시간이 1분 남았어요.`);
+        // 10, 9, 8 ... 1까지카운트 다운
+      } else if (timeLeft <= 10 && timeLeft > 0) {
+        speech(`${timeLeft}`, true);
+        //0일 때는 삐익! 끝났다는 노래 들려주기!
+      } else if (timeLeft === 0) {
+        var audio = new Audio("endingSound.mp3");
+        audio.play();
+        speech(`활동 시간이 종료되었어요.`);
+      }
+    }
+
     displayTimeLeft(timeLeft);
   }, 1000);
 }
@@ -178,3 +206,48 @@ function setMinute(min) {
 
 pauseBtn.addEventListener("click", pauseTimer);
 resetBtn.addEventListener("click", resetTimer);
+
+// 남은 시간 말해주는 부분
+var voices = [];
+function setVoiceList() {
+  voices = window.speechSynthesis.getVoices();
+}
+setVoiceList();
+if (window.speechSynthesis.onvoiceschanged !== undefined) {
+  window.speechSynthesis.onvoiceschanged = setVoiceList;
+}
+function speech(txt, countdown) {
+  if (!window.speechSynthesis) {
+    alert(
+      "음성 재생을 지원하지 않는 브라우저입니다. 크롬, 파이어폭스 등의 최신 브라우저를 이용하세요"
+    );
+    return;
+  }
+  var lang = "ko-KR";
+  var utterThis = new SpeechSynthesisUtterance(txt);
+  utterThis.onend = function (event) {};
+  utterThis.onerror = function (event) {
+    console.log("error", event);
+  };
+  var voiceFound = false;
+  for (var i = 0; i < voices.length; i++) {
+    if (
+      voices[i].lang.indexOf(lang) >= 0 ||
+      voices[i].lang.indexOf(lang.replace("-", "_")) >= 0
+    ) {
+      utterThis.voice = voices[i];
+      voiceFound = true;
+    }
+  }
+  if (!voiceFound) {
+    alert("voice not found");
+    return;
+  }
+  utterThis.lang = lang;
+  utterThis.pitch = 1;
+  utterThis.rate = 1.2; //속도
+  if (countdown) {
+    utterThis.rate = 1.7; // 카운트 다운은 조금 빠르게 말해야 함.
+  }
+  window.speechSynthesis.speak(utterThis);
+}
