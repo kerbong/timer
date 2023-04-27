@@ -12,11 +12,15 @@
       <div class="circle">
         <svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
           <g transform="translate(110,110)">
-            <circle r="100" class="e-c-base" />
+            <circle r="100" class="e-c-base"></circle>
             <g transform="rotate(-90)">
-              <circle r="100" class="e-c-progress" />
-              <g id="e-pointer">
-                <circle cx="100" cy="0" r="8" class="e-c-pointer" />
+              <circle
+                r="100"
+                class="e-c-progress"
+                style="stroke-dasharray: 628.319; stroke-dashoffset: -1256.64"
+              ></circle>
+              <g id="e-pointer" style="transform: rotate(360deg)">
+                <circle cx="100" cy="0" r="8" class="e-c-pointer"></circle>
               </g>
             </g>
           </g>
@@ -37,26 +41,21 @@
 
       <div class="flex-center">
         <div class="controlls">
-          <div class="display-remain-time">
-            <input type="text" id="timer-input-min" placeholder="00" />:
-            <input type="text" id="timer-input-sec" placeholder="30" />
-          </div>
+          <div class="display-remain-time">01:00</div>
           <div class="btns">
             <button class="play" id="pause"></button>
             <button class="reset" id="reset"></button>
           </div>
         </div>
       </div>
+      <div class="minute-btns">
+        <button class="minute-btn" onclick="setMinute(1)">1분</button>
+        <button class="minute-btn" onclick="setMinute(3)">3분</button>
+        <button class="minute-btn" onclick="setMinute(5)">5분</button>
+        <button class="minute-btn" onclick="setMinute(10)">10분</button>
+        <button class="minute-btn" onclick="setMinute(20)">20분</button>
+      </div>
     </div>
-    <!-- 1분 3분 5분 10분 버튼 만들어주기 -->
-    <div class="minute-btns">
-      <button class="minute-btn" onclick="setMinute(1)">1분</button>
-      <button class="minute-btn" onclick="setMinute(3)">3분</button>
-      <button class="minute-btn" onclick="setMinute(5)">5분</button>
-      <button class="minute-btn" onclick="setMinute(10)">10분</button>
-      <button class="minute-btn" onclick="setMinute(20)">20분</button>
-    </div>
-
     <p></p>
     <script src="index.js"></script>
   </body>

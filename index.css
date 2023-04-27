@@ -1,10 +1,14 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto:100,300");
 
+body {
+  display: flex;
+}
+
 :root {
-  --font-size-lg: 5vw;
-  --font-size-md: 4vw;
-  --font-size-sm: 3vw;
-  --padding-btn: 2vw;
+  --font-size-lg: 4.5vw;
+  --font-size-md: 3.5vw;
+  --font-size-sm: 2.5vw;
+  --padding-btn: 1vw;
   --margin-btn: 1vw;
 }
 
@@ -12,7 +16,8 @@
   position: relative;
   overflow: hidden;
   height: 0;
-  padding-top: calc(200 / 400 * 100%);
+  padding-top: calc(220 / 400 * 100%);
+  width: 75%;
 }
 svg {
   position: absolute;
@@ -47,15 +52,15 @@ button[data-setter]:hover {
 }
 .container {
   position: relative;
-  top: 30px;
-  width: 80%;
+  width: 85%;
   margin: 0 auto;
+  display: flex;
 }
 .setters {
   position: absolute;
-  /* left: 85px; */
+  left: 22vw;
   top: calc(100 / 400 * 100%);
-  width: 18vw;
+  width: 19vw;
   display: flex;
   justify-content: space-between;
 }
@@ -75,20 +80,19 @@ button[data-setter]:hover {
 }
 .controlls {
   position: absolute;
-  /* left: 75px; */
+  left: 22vw;
   top: calc(150 / 400 * 100%);
   text-align: center;
-  /* min-width: 400px; */
-  width: 100%;
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
+  width: 19vw;
 }
 .display-remain-time {
   font-family: "Roboto";
   font-weight: 800;
-  font-size: 8vw;
+  font-size: 9vw;
   color: #6b6b6b;
   text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;
 }
@@ -109,7 +113,7 @@ button[data-setter]:hover {
 
 .btns {
   width: 18vw;
-
+  margin-top: 0.5vw;
   display: flex;
   justify-content: center;
 }
@@ -171,8 +175,8 @@ button[data-setter]:hover {
 .minute-btns {
   display: flex;
   justify-content: center;
-  width: 100%;
-  margin-top: 50px;
+  width: 20%;
+  flex-direction: column;
 }
 .minute-btn {
   padding: var(--padding-btn);
