@@ -138,11 +138,11 @@ function timer(seconds) {
       } else {
         remainMS = timeLeft + "초";
       }
-      speech(`활동시간의 반이 지났어요. ${remainMS} 남았어요.`);
+      speech(`시간의 반이 지났어요. ${remainMS} 남았어요.`);
     } else {
       //1분 남았으면
       if (timeLeft === 60) {
-        speech(`활동시간이 1분 남았어요.`);
+        speech(`시간이 1분 남았어요.`);
         // 10, 9, 8 ... 1까지카운트 다운
       } else if (timeLeft <= 10 && timeLeft > 0) {
         speech(`${timeLeft}`, true);
@@ -150,7 +150,7 @@ function timer(seconds) {
       } else if (timeLeft === 0) {
         var audio = new Audio("endingSound.mp3");
         audio.play();
-        speech(`활동 시간이 종료되었어요.`);
+        speech(`시간이 종료되었어요.`);
       }
     }
 
@@ -235,6 +235,7 @@ function speech(txt, countdown) {
       voices[i].lang.indexOf(lang) >= 0 ||
       voices[i].lang.indexOf(lang.replace("-", "_")) >= 0
     ) {
+      console.log();
       utterThis.voice = voices[i];
       voiceFound = true;
     }
