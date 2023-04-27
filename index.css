@@ -152,6 +152,11 @@ button[data-setter]:hover {
 }
 #pause:hover {
   opacity: 0.8;
+  cursor: pointer;
+}
+#reset:hover {
+  opacity: 0.8;
+  cursor: pointer;
 }
 .e-c-base {
   fill: none;

@@ -60,7 +60,7 @@ function changeWholeTime(seconds, set) {
     } else {
       //만약 일시정지상태였으면,
       if (isPaused) {
-        isStarted = false;
+        // isStarted = false;
         isStopped = true;
         timeLeft += seconds;
         wholeTime = timeLeft;
@@ -159,6 +159,7 @@ function timer(seconds) {
 }
 //
 function pauseTimer(event) {
+  //중간에 멈춘 경우 초기 세팅으로 돌아가기
   if (!isStopped) {
     isPaused = false;
     isStarted = false;
@@ -169,21 +170,22 @@ function pauseTimer(event) {
     update(firstSetTime, firstSetTime);
     displayTimeLeft(firstSetTime);
     isStopped = true;
+
+    //시작하지 않았을 경우 시작하기
   } else if (isStarted === false) {
     timer(wholeTime);
     isStarted = true;
     this.classList?.remove("play");
     this.classList?.add("pause");
 
-    // setterBtns.forEach(function (btn) {
-    //   btn.disabled = true;
-    //   btn.style.opacity = 0.5;
-    // });
+    //멈춰진 상태일 경우 다시 재생하기
   } else if (isPaused) {
     this.classList?.remove("play");
     this.classList?.add("pause");
+    clearInterval(intervalTimer);
     timer(timeLeft);
     isPaused = isPaused ? false : true;
+    //타이머 실행(재생) 중인 경우 멈추기
   } else {
     this.classList?.remove("pause");
     this.classList?.add("play");
