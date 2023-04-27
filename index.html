@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Timer</title>
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="circle">
+        <svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
+          <g transform="translate(110,110)">
+            <circle r="100" class="e-c-base" />
+            <g transform="rotate(-90)">
+              <circle r="100" class="e-c-progress" />
+              <g id="e-pointer">
+                <circle cx="100" cy="0" r="8" class="e-c-pointer" />
+              </g>
+            </g>
+          </g>
+        </svg>
+      </div>
+      <div class="flex-center">
+        <div class="setters">
+          <div class="minutes-set">
+            <button data-setter="minutes-plus">+</button>
+            <button data-setter="minutes-minus">-</button>
+          </div>
+          <div class="seconds-set">
+            <button data-setter="seconds-plus">+</button>
+            <button data-setter="seconds-minus">-</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex-center">
+        <div class="controlls">
+          <div class="display-remain-time">
+            <input type="text" id="timer-input-min" placeholder="00" />:
+            <input type="text" id="timer-input-sec" placeholder="30" />
+          </div>
+          <div class="btns">
+            <button class="play" id="pause"></button>
+            <button class="reset" id="reset"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 1분 3분 5분 10분 버튼 만들어주기 -->
+    <div class="minute-btns">
+      <button class="minute-btn" onclick="setMinute(1)">1분</button>
+      <button class="minute-btn" onclick="setMinute(3)">3분</button>
+      <button class="minute-btn" onclick="setMinute(5)">5분</button>
+      <button class="minute-btn" onclick="setMinute(10)">10분</button>
+      <button class="minute-btn" onclick="setMinute(20)">20분</button>
+    </div>
+
+    <script src="index.js"></script>
+  </body>
+  <!-- Copyright (c) 2023 by Sergey Bunas (https://codepen.io/Serjobas/pen/GvrKRB)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+ -->
+</html>
