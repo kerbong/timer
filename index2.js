@@ -4,6 +4,51 @@ let indicator = document.getElementById("e-indicator");
 let pointer = document.getElementById("e-pointer");
 let length = Math.PI * 2 * 100;
 
+let speakRate = 1; // 말하는 속도
+let countdownRate = 1; // 카운트 다운 말하는 속도
+
+//브라우저의 종류에 따라.. 읽어주는 속도가 달라야함.
+function getBrowserType() {
+  const userAgent = navigator.userAgent;
+
+  if (/(msie|trident)/i.test(userAgent)) {
+    return "Internet Explorer";
+  } else if (/firefox/i.test(userAgent)) {
+    return "Firefox";
+  } else if (/Chrome/.test(userAgent)) {
+    if (/Edg/.test(userAgent)) {
+      console.log("엣지");
+      speakRate = 1.1;
+      countdownRate = 1.5;
+      return "Edge";
+    }
+    if (/OPR/.test(userAgent)) {
+      return "Opera";
+    }
+    console.log("크롬");
+    return "Chrome";
+  } else if (/Safari/.test(userAgent)) {
+    if (/EdgiOS/.test(userAgent)) {
+      console.log("엣지");
+      speakRate = 1.1;
+      countdownRate = 1.5;
+      return "Edge (iOS)";
+    }
+    if (/CriOS/.test(userAgent)) {
+      return "Chrome (iOS)";
+    }
+    return "Safari";
+  } else {
+    return "Unknown";
+  }
+}
+
+let browserType = getBrowserType();
+
+if (browserType !== "Chrome" && browserType !== "Edge") {
+  alert("크롬Chrome / 엣지Edge 브라우저에서 가장 잘 작동합니다!");
+}
+
 progressBar.style.strokeDasharray = length;
 
 function update(value, timePercent) {
@@ -65,7 +110,7 @@ function changeWholeTime(seconds, set) {
         timeLeft += seconds;
         wholeTime = timeLeft;
 
-        clearInterval(intervalTimer);
+        clearTimeout(intervalTimer);
         update(timeLeft, timeLeft);
         displayTimeLeft(timeLeft);
         //작동중이었으면
@@ -77,7 +122,7 @@ function changeWholeTime(seconds, set) {
         timeLeft += seconds;
         wholeTime = timeLeft;
 
-        clearInterval(intervalTimer);
+        clearTimeout(intervalTimer);
         update(timeLeft, timeLeft);
         displayTimeLeft(timeLeft);
         pauseTimer();
@@ -112,10 +157,10 @@ function timer(seconds) {
   let remainTime = Date.now() + seconds * 1000;
   displayTimeLeft(seconds);
 
-  intervalTimer = setInterval(function () {
+  intervalTimer = setTimeout(function tick() {
     timeLeft = Math.round((remainTime - Date.now()) / 1000);
     if (timeLeft < 0) {
-      clearInterval(intervalTimer);
+      clearTimeout(intervalTimer);
       isStarted = false;
       //   setterBtns.forEach(function (btn) {
       //     btn.disabled = false;
@@ -155,6 +200,7 @@ function timer(seconds) {
     }
 
     displayTimeLeft(timeLeft);
+    intervalTimer = setTimeout(tick, 1000);
   }, 1000);
 }
 //
@@ -165,7 +211,7 @@ function pauseTimer(event) {
     isStarted = false;
     pauseBtn.classList?.remove("pause");
     pauseBtn.classList?.add("play");
-    clearInterval(intervalTimer);
+    clearTimeout(intervalTimer);
     wholeTime = firstSetTime;
     update(firstSetTime, firstSetTime);
     displayTimeLeft(firstSetTime);
@@ -182,14 +228,14 @@ function pauseTimer(event) {
   } else if (isPaused) {
     this.classList?.remove("play");
     this.classList?.add("pause");
-    clearInterval(intervalTimer);
+    clearTimeout(intervalTimer);
     timer(timeLeft);
     isPaused = isPaused ? false : true;
     //타이머 실행(재생) 중인 경우 멈추기
   } else {
     this.classList?.remove("pause");
     this.classList?.add("play");
-    clearInterval(intervalTimer);
+    clearTimeout(intervalTimer);
     isPaused = isPaused ? false : true;
   }
 }
@@ -247,9 +293,9 @@ function speech(txt, countdown) {
   }
   utterThis.lang = lang;
   utterThis.pitch = 1;
-  utterThis.rate = 1; //속도
+  utterThis.rate = speakRate;
   if (countdown) {
-    utterThis.rate = 1; // 카운트 다운은 조금 빠르게 말해야 함.
+    utterThis.rate = countdownRate; // 카운트 다운은 조금 빠르게 말해야 함.
   }
   window.speechSynthesis.speak(utterThis);
 }
