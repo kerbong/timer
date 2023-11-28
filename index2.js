@@ -7,6 +7,34 @@ let length = Math.PI * 2 * 100;
 let speakRate = 1; // 말하는 속도
 let countdownRate = 1; // 카운트 다운 말하는 속도
 
+const inputField = document.getElementById("inputField");
+const addForm = document.getElementById("input-form");
+const inputList = document.getElementById("todo-div");
+
+// 입력 내용 배열
+const inputs = [];
+
+// 입력 추가 버튼 클릭 이벤트 처리
+addForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const input = inputField.value;
+  if (input) {
+    inputs.push(input);
+    const li = document.createElement("li");
+    li.textContent = input;
+    li.title = "클릭해서 제거하기";
+    li.addEventListener("click", () => {
+      li.remove(); // 클릭한 입력 목록 제거
+      const index = inputs.indexOf(input);
+      if (index > -1) {
+        inputs.splice(index, 1); // 배열에서도 제거
+      }
+    });
+    inputList.appendChild(li);
+    inputField.value = "";
+  }
+});
+
 //브라우저의 종류에 따라.. 읽어주는 속도가 달라야함.
 function getBrowserType() {
   const userAgent = navigator.userAgent;
