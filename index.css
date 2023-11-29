@@ -52,7 +52,8 @@ button[data-setter]:hover {
   align-items: center;
   position: relative;
 }
-.container {
+.container,
+#stopWatch-div {
   position: relative;
   width: 100%;
   margin: 0 auto;
@@ -63,7 +64,7 @@ button[data-setter]:hover {
   position: absolute;
   left: -35.5vw;
 
-  top: 8vw;
+  top: 7.5vw;
 
   width: 22vw;
   display: flex;
@@ -87,7 +88,8 @@ button[data-setter]:hover {
 }
 .controlls {
   position: absolute;
-  top: 13vw;
+  top: 12.5vw;
+
   text-align: center;
   display: flex;
   justify-content: center;
@@ -215,6 +217,13 @@ button[data-setter]:hover {
   padding-left: 3vw;
 }
 
+#watchTodo-div,
+#watchRecord-div {
+  width: 95vw;
+  display: flex;
+  flex-wrap: wrap;
+}
+
 #inputField {
   width: 70vw;
   font-size: 3vw;
@@ -230,6 +239,27 @@ button[data-setter]:hover {
   margin-top: 20px;
 }
 
+#switch {
+  position: fixed;
+  left: 2vw;
+  top: 2vw;
+  font-size: 1.3vw;
+  border-radius: 5vw;
+  background-color: #f7958e;
+  border: 0;
+  padding: 1vw;
+  cursor: pointer;
+  z-index: 20;
+}
+
+#switch:hover {
+  opacity: 0.8;
+}
+
+#stopWatch-div {
+  display: none;
+}
+
 li {
   list-style: none;
   word-break: keep-all;
@@ -241,4 +271,82 @@ li {
 li:hover {
   background-color: lightgray;
   border-radius: 10px;
+}
+
+.h1 {
+  font-size: 12vw;
+  display: flex;
+
+  margin: 10px;
+}
+
+.h1-span {
+  font-size: 12vw;
+  display: inline-block;
+  margin: 0 2vw;
+}
+
+.stopWatchPause {
+  content: "";
+  top: 0;
+  left: 0;
+  width: 5vw;
+  height: 6.3vw;
+  background-color: transparent;
+  border-radius: 1px;
+  border: 1vw solid #f7958e;
+  border-top: none;
+  border-bottom: none;
+  position: relative;
+
+  cursor: pointer;
+}
+
+.stopWatchPlay {
+  display: block;
+  content: "";
+  position: relative;
+  top: 0;
+  left: 0;
+  border-right: 0;
+  background-color: white;
+  margin-right: -3.5vw;
+
+  border-top: 2.9vw solid #ffffff;
+  border-bottom: 2.9vw solid #ffffff;
+  border-left: 6vw solid #f7958e;
+  cursor: pointer;
+}
+
+.stopWatchReset {
+  outline: none;
+  background: transparent;
+  border: none;
+  padding: 0;
+  display: block;
+  content: "";
+  position: relative;
+  width: 5.5vw;
+  height: 6.2vw;
+  background-color: #f7958e;
+  cursor: pointer;
+}
+
+.stopWatch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100vw;
+  margin-bottom: 3vw;
+}
+
+.recordWatch {
+  font-size: 12vw;
+  color: #f7958e;
+  display: none;
+  cursor: pointer;
+  width: 12vw;
+  padding: 0;
+  background-color: inherit;
+  border: 0;
 }

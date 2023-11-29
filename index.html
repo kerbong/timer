@@ -13,6 +13,7 @@
     ></script>
   </head>
   <body>
+    <button id="switch" onclick="switchHandler()">스톱워치 보기</button>
     <div class="container">
       <div class="circle">
         <svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
@@ -64,14 +65,51 @@
       <div id="todo-div"></div>
       <!-- 인풋창 -->
     </div>
+    <div id="stopWatch-div">
+      <div class="stopWatch">
+        <h1 class="h1">
+          <span class="h1-span" id="stopWatch-min">00</span> :
+          <span class="h1-span" id="stopWatch-sec">00</span> :
+          <span class="h1-span" id="stopWatch-censec">00</span>
+        </h1>
+        <div
+          class="flex-center"
+          style="width: 40vw; justify-content: space-evenly; height: 15vw"
+        >
+          <button
+            id="startStopButton"
+            onclick="startStopWatch()"
+            class="stopWatchPlay"
+          ></button>
+          <button
+            id="recordButton"
+            onclick="recordWatch()"
+            class="recordWatch"
+            title="시간 기록하기(계속 진행)"
+          >
+            +
+          </button>
+          <button
+            class="stopWatchReset"
+            onclick="resetStopWatch()"
+            id="resetButton"
+            title="정지하고 시간 초기화하기"
+          ></button>
+        </div>
+        <!-- 할일 목록 -->
+        <div id="watchTodo-div"></div>
+      </div>
+      <br />
+    </div>
     <form id="input-form">
       <input
         type="text"
         id="inputField"
-        placeholder="보여줄 내용을 입력하세요(타이머 우측)"
+        placeholder="보여줄 내용을 입력하세요"
       />
     </form>
-    <p></p>
+    <!-- 스톱워치 기록 -->
+    <div id="watchRecord-div"></div>
     <script src="index2.js"></script>
   </body>
   <!-- Copyright (c) 2023 by Sergey Bunas (https://codepen.io/Serjobas/pen/GvrKRB)

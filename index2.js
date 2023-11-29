@@ -2,6 +2,8 @@
 let progressBar = document.querySelector(".e-c-progress");
 let indicator = document.getElementById("e-indicator");
 let pointer = document.getElementById("e-pointer");
+let switchBtn = document.getElementById("switch");
+let containerDiv = document.querySelector(".container");
 let length = Math.PI * 2 * 100;
 
 let speakRate = 1; // 말하는 속도
@@ -10,6 +12,17 @@ let countdownRate = 1; // 카운트 다운 말하는 속도
 const inputField = document.getElementById("inputField");
 const addForm = document.getElementById("input-form");
 const inputList = document.getElementById("todo-div");
+const inputWatchList = document.getElementById("watchTodo-div");
+
+let stopWatchDiv = document.querySelector("#stopWatch-div");
+const stopMin = document.getElementById("stopWatch-min");
+const stopSec = document.getElementById("stopWatch-sec");
+const stopCenSec = document.getElementById("stopWatch-censec");
+const stopWatchRecord = document.getElementById("watchRecord-div");
+
+const watchStartBtn = document.getElementById("startStopButton");
+const watchResetBtn = document.getElementById("stopWatchReset");
+const watchRecordBtn = document.getElementById("recordButton");
 
 // 입력 내용 배열
 const inputs = [];
@@ -30,10 +43,27 @@ addForm.addEventListener("submit", (e) => {
         inputs.splice(index, 1); // 배열에서도 제거
       }
     });
-    inputList.appendChild(li);
+    if (switchBtn.innerText === "스톱워치 보기") {
+      inputList.appendChild(li);
+    } else {
+      inputWatchList.appendChild(li);
+    }
+
     inputField.value = "";
   }
 });
+
+const switchHandler = () => {
+  if (switchBtn.innerText === "스톱워치 보기") {
+    switchBtn.innerText = "타이머 보기";
+    containerDiv.style.display = "none";
+    stopWatchDiv.style.display = "flex";
+  } else {
+    switchBtn.innerText = "스톱워치 보기";
+    containerDiv.style.display = "flex";
+    stopWatchDiv.style.display = "none";
+  }
+};
 
 //브라우저의 종류에 따라.. 읽어주는 속도가 달라야함.
 function getBrowserType() {
@@ -327,3 +357,79 @@ function speech(txt, countdown) {
   }
   window.speechSynthesis.speak(utterThis);
 }
+
+let time = 0;
+let isRunning = false;
+let intervalRef = null;
+let records = [];
+
+const startStopWatch = () => {
+  if (!isRunning) {
+    isRunning = true;
+    intervalRef = setInterval(() => {
+      time += 1;
+      getMinutes();
+      getSeconds();
+      getCentiseconds();
+    }, 10);
+    watchRecordBtn.style.display = "block";
+    watchStartBtn.className = "stopWatchPause";
+  } else {
+    isRunning = false;
+    clearInterval(intervalRef);
+    watchRecordBtn.style.display = "none";
+    watchStartBtn.className = "stopWatchPlay";
+  }
+};
+
+const resetStopWatch = () => {
+  isRunning = false;
+  clearInterval(intervalRef);
+  time = 0;
+  getMinutes();
+  getSeconds();
+  getCentiseconds();
+  records = [];
+  stopWatchRecord.innerText = "";
+  watchRecordBtn.style.display = "none";
+  watchStartBtn.className = "stopWatchPlay";
+};
+
+const recordWatch = () => {
+  records.push(time);
+
+  const li = document.createElement("li");
+  li.style.margin = "0 2vw";
+  li.textContent =
+    records.length +
+    ".  " +
+    getMinutes(true) +
+    " : " +
+    getSeconds(true) +
+    " : " +
+    getCentiseconds(true);
+
+  stopWatchRecord.appendChild(li);
+};
+
+const getMinutes = (record) => {
+  if (!record) {
+    stopMin.innerText = `0${Math.floor((time / 6000) % 60)}`.slice(-2);
+  } else {
+    return `0${Math.floor((time / 6000) % 60)}`.slice(-2);
+  }
+};
+const getSeconds = (record) => {
+  if (!record) {
+    stopSec.innerText = `0${Math.floor((time / 100) % 60)}`.slice(-2);
+  } else {
+    return `0${Math.floor((time / 100) % 60)}`.slice(-2);
+  }
+};
+const getCentiseconds = (record) => {
+  if (!record) {
+    stopCenSec.innerText = `0${time % 100}`.slice(-2);
+  } else {
+    return `0${time % 100}`.slice(-2);
+  }
+};
