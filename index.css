@@ -9,6 +9,7 @@ body {
   --font-size-lg: 4.5vw;
   --font-size-md: 3.5vw;
   --font-size-sm: 2.5vw;
+  --font-size-xs: 2vw;
   --padding-btn: 1vw;
   --margin-btn: 1vw;
 }
@@ -60,6 +61,11 @@ button[data-setter]:hover {
   display: flex;
   height: auto;
 }
+
+.container {
+  margin-left: 15px;
+}
+
 .setters {
   position: absolute;
   left: -35.5vw;
@@ -198,23 +204,38 @@ button[data-setter]:hover {
 }
 .minute-btn {
   padding: var(--padding-btn);
-  border-radius: 15px;
+
   cursor: pointer;
   border-width: 0;
-  background-color: #6b6b6b;
+  background-color: #b6b6b6;
   color: whitesmoke;
   font-weight: bold;
-  font-family: "Roboto";
-  letter-spacing: 2px;
+
+  letter-spacing: 1px;
   margin: var(--margin-btn);
   font-size: var(--font-size-sm);
-  width: 13vw;
-  border-radius: 15vw;
+  width: 10vw;
+  border-radius: 10px;
 }
 
 #todo-div {
-  width: 33vw;
+  width: 31vw;
   padding-left: 3vw;
+}
+
+#noise-div {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  margin: 25px;
+  background-color: lightgray;
+  padding: 1.5vw;
+  width: auto;
+  border-radius: 3vw;
+}
+
+#volBtns {
+  display: none;
 }
 
 #watchTodo-div,
@@ -224,22 +245,85 @@ button[data-setter]:hover {
   flex-wrap: wrap;
 }
 
+#noiseBtn {
+  border-radius: 10px;
+  font-size: var(--font-size-xs);
+  margin: 1vw;
+  padding: 2vw;
+  border: 0;
+  background-color: whitesmoke;
+}
+
+#warningDiv {
+  position: absolute;
+  top: 5vh;
+  right: 5vw;
+  background-color: #575757;
+  color: whitesmoke;
+  transition: background-color 0.3s ease-in-out;
+  opacity: 0;
+  padding: 10px;
+  border-radius: 10px;
+  z-index: 5;
+}
+
 #inputField {
   width: 70vw;
-  font-size: 3vw;
+  font-size: 2.4vw;
   padding: 7px;
-  border-radius: 4vw;
-  padding: 1.4vw;
+  border-radius: 2vw;
+  padding: 2vw;
+  border-width: 1px;
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 40vw;
+  height: 3vw;
+  border-radius: 3vw;
+  background: #f2f2f2;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: 0.2s;
+  transition: opacity 0.2s;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 5vw;
+  height: 5vw;
+  border-radius: 50%;
+  background: #636363;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 5vw;
+  height: 5vw;
+  border-radius: 50%;
+  background: #636363;
+  cursor: pointer;
+}
+
+#nowVolume {
+  margin-left: 2vw;
+  font-size: var(--font-size-sm);
+  width: 4vw;
 }
 
 #input-form {
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-top: 20px;
 }
 
-#switch {
+#switch,
+#left-time {
   position: fixed;
   left: 2vw;
   top: 2vw;
@@ -252,7 +336,12 @@ button[data-setter]:hover {
   z-index: 20;
 }
 
-#switch:hover {
+#left-time {
+  top: 7vw;
+}
+
+#switch:hover,
+#left-time:hover {
   opacity: 0.8;
 }
 

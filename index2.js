@@ -4,10 +4,19 @@ let indicator = document.getElementById("e-indicator");
 let pointer = document.getElementById("e-pointer");
 let switchBtn = document.getElementById("switch");
 let containerDiv = document.querySelector(".container");
+let leftTimeBtn = document.getElementById("left-time");
 let length = Math.PI * 2 * 100;
 
 let speakRate = 1; // 말하는 속도
 let countdownRate = 1; // 카운트 다운 말하는 속도
+let remainSpeak = true; // 남은시간 알려주기
+let noiseOn = false;
+
+let audioContext, analyser, microphone, javascriptNode; // 소음측정 관련 속성
+let volumeSum = 0; // 소음측정 속성
+let volumeCount = 0; // 소음측정 속성
+
+let settingVolume = 50;
 
 const inputField = document.getElementById("inputField");
 const addForm = document.getElementById("input-form");
@@ -54,12 +63,12 @@ addForm.addEventListener("submit", (e) => {
 });
 
 const switchHandler = () => {
-  if (switchBtn.innerText === "스톱워치 보기") {
-    switchBtn.innerText = "타이머 보기";
+  if (switchBtn.innerText === "⏱️ 보기") {
+    switchBtn.innerText = "⏳ 보기";
     containerDiv.style.display = "none";
     stopWatchDiv.style.display = "flex";
   } else {
-    switchBtn.innerText = "스톱워치 보기";
+    switchBtn.innerText = "⏱️ 보기";
     containerDiv.style.display = "flex";
     stopWatchDiv.style.display = "none";
   }
@@ -231,24 +240,30 @@ function timer(seconds) {
     }
     // 남은시간이 전체 시간의 절반일 때 알려주기!
     if ((timeLeft / wholeTime) * 100 === 50 && timeLeft > 10) {
-      let remainMS;
-      //분 단위가 남았으면
-      if (timeLeft > 60) {
-        let remainM = Math.floor(timeLeft / 60);
-        let remainS = timeLeft - remainM * 60;
-        remainMS = remainM + "분" + remainS + "초";
-        //초 단위가 남았으면
-      } else {
-        remainMS = timeLeft + "초";
+      if (remainSpeak) {
+        let remainMS;
+        //분 단위가 남았으면
+        if (timeLeft > 60) {
+          let remainM = Math.floor(timeLeft / 60);
+          let remainS = timeLeft - remainM * 60;
+          remainMS = remainM + "분" + remainS + "초";
+          //초 단위가 남았으면
+        } else {
+          remainMS = timeLeft + "초";
+        }
+        speech(`시간의 반이 지났어요. ${remainMS} 남았어요.`);
       }
-      speech(`시간의 반이 지났어요. ${remainMS} 남았어요.`);
     } else {
       //1분 남았으면
       if (timeLeft === 60) {
-        speech(`시간이 1분 남았어요.`);
+        if (remainSpeak) {
+          speech(`시간이 1분 남았어요.`);
+        }
         // 10, 9, 8 ... 1까지카운트 다운
       } else if (timeLeft <= 10 && timeLeft > 0) {
-        speech(`${+timeLeft}`, true);
+        if (remainSpeak) {
+          speech(`${+timeLeft}`, true);
+        }
         //0일 때는 삐익! 끝났다는 노래 들려주기!
       } else if (timeLeft === 0) {
         var audio = new Audio("endingSound.mp3");
@@ -261,6 +276,115 @@ function timer(seconds) {
     intervalTimer = setTimeout(tick, 1000);
   }, 1000);
 }
+
+// 경고음 재생 함수
+function playWarningSound() {
+  var audio = new Audio("beep.mp3");
+  audio.play();
+}
+
+// 볼륨 체크 함수
+function checkVolume() {
+  javascriptNode.onaudioprocess = function () {
+    var array = new Uint8Array(analyser.frequencyBinCount);
+    analyser.getByteFrequencyData(array);
+    var values = 0;
+
+    var length = array.length;
+    for (var i = 0; i < length; i++) {
+      values += array[i];
+    }
+
+    var average = values / length;
+    volumeSum += average;
+    volumeCount++;
+
+    // 1초마다 평균 볼륨 계산 및 출력
+    if (volumeCount >= 21) {
+      // AudioContext의 sampleRate는 기본적으로 44100Hz이고, bufferSize가 1024라면 약 43회 호출로 1초
+      console.log(Math.round(volumeSum / volumeCount));
+      volumeSum = 0;
+      volumeCount = 0;
+    }
+
+    // 볼륨이 settingVolume을 초과하면 경고음 재생
+    if (average > settingVolume) {
+      playWarningSound();
+      // div 표시
+      const warningDiv = document.getElementById("warningDiv");
+      warningDiv.style.opacity = 1;
+
+      // 2초 후 div 숨김
+      setTimeout(() => {
+        warningDiv.style.opacity = 0;
+      }, 2000);
+    }
+  };
+}
+
+function control() {
+  const controlButton = document.getElementById("noiseBtn");
+  const volBtnsDiv = document.getElementById("volBtns");
+  if (noiseOn) {
+    stop();
+    controlButton.innerText = "소곤소곤 🤫";
+    noiseOn = false;
+    volBtnsDiv.style.display = "none";
+  } else {
+    start();
+    controlButton.innerText = "평소처럼 😊";
+    volBtnsDiv.style.display = "flex";
+    noiseOn = true;
+  }
+}
+
+function start() {
+  audioContext = new AudioContext();
+
+  navigator.mediaDevices
+    .getUserMedia({ audio: true })
+    .then((stream) => {
+      microphone = audioContext.createMediaStreamSource(stream);
+      analyser = audioContext.createAnalyser();
+      javascriptNode = audioContext.createScriptProcessor(2048, 1, 1);
+
+      analyser.smoothingTimeConstant = 0.8;
+      analyser.fftSize = 1024;
+
+      microphone.connect(analyser);
+      analyser.connect(javascriptNode);
+      javascriptNode.connect(audioContext.destination);
+
+      checkVolume();
+    })
+    .catch((err) => {
+      console.log("The following error occured: " + err);
+    });
+}
+
+// 볼륨 체크 중지 함수
+function stop() {
+  javascriptNode.disconnect();
+  analyser.disconnect();
+  microphone.disconnect();
+  audioContext.close();
+}
+
+document.getElementById("volumeRange").oninput = function () {
+  settingVolume = this.value;
+  document.getElementById("nowVolume").innerText = this.value;
+};
+
+function leftTimeHandler() {
+  if (leftTimeBtn.innerText === "🔔 알림") {
+    leftTimeBtn.innerText = "🔕 알림";
+    remainSpeak = false;
+  } else {
+    leftTimeBtn.innerText = "🔔 알림";
+    remainSpeak = true;
+  }
+}
+
 //
 function pauseTimer(event) {
   //중간에 멈춘 경우 초기 세팅으로 돌아가기
@@ -341,7 +465,6 @@ function speech(txt, countdown) {
       voices[i].lang.indexOf(lang) >= 0 ||
       voices[i].lang.indexOf(lang.replace("-", "_")) >= 0
     ) {
-      console.log();
       utterThis.voice = voices[i];
       voiceFound = true;
     }

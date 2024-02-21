@@ -13,7 +13,22 @@
     ></script>
   </head>
   <body>
-    <button id="switch" onclick="switchHandler()">스톱워치 보기</button>
+    <div id="warningDiv">🤫 소음발생! 🤫</div>
+
+    <button
+      id="switch"
+      onclick="switchHandler()"
+      title="스톱워치와 타이머 보기를 전환할 수 있어요!"
+    >
+      ⏱️ 보기
+    </button>
+    <button
+      id="left-time"
+      onclick="leftTimeHandler()"
+      title="남은 시간이 절반일 때 & 남은 시간 10초 전부터 알려줘요!"
+    >
+      🔔 알림
+    </button>
     <div class="container">
       <div class="circle">
         <svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
@@ -101,6 +116,30 @@
       </div>
       <br />
     </div>
+
+    <div id="noise-div">
+      <button
+        id="noiseBtn"
+        onclick="control()"
+        title="소곤소곤 기능을 켜고 끌 수 있어요!"
+      >
+        소곤소곤 🤫
+      </button>
+      <!-- 소곤on 일때 보일 볼륨세팅 버튼들 -->
+      <div id="volBtns">
+        <input
+          type="range"
+          min="10"
+          max="150"
+          value="50"
+          step="10"
+          class="slider"
+          id="volumeRange"
+        />
+        <div id="nowVolume">50</div>
+      </div>
+    </div>
+
     <form id="input-form">
       <input
         type="text"
