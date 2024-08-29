@@ -52,7 +52,7 @@ addForm.addEventListener("submit", (e) => {
         inputs.splice(index, 1); // 배열에서도 제거
       }
     });
-    if (switchBtn.innerText === "스톱워치 보기") {
+    if (switchBtn.name === "타이머") {
       inputList.appendChild(li);
     } else {
       inputWatchList.appendChild(li);
@@ -67,10 +67,12 @@ const switchHandler = () => {
     switchBtn.innerText = "⏳ 보기";
     containerDiv.style.display = "none";
     stopWatchDiv.style.display = "flex";
+    switchBtn.name = "스톱워치"
   } else {
     switchBtn.innerText = "⏱️ 보기";
     containerDiv.style.display = "flex";
     stopWatchDiv.style.display = "none";
+     switchBtn.name = "타이머"
   }
 };
 
