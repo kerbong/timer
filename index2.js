@@ -52,11 +52,11 @@ addForm.addEventListener("submit", (e) => {
         inputs.splice(index, 1); // 배열에서도 제거
       }
     });
-    if (switchBtn.name === "타이머") {
-      inputList.appendChild(li);
-    } else {
+    // if (switchBtn.name === "타이머") {
+    //   inputList.appendChild(li);
+    // } else {
       inputWatchList.appendChild(li);
-    }
+    // }
 
     inputField.value = "";
   }
