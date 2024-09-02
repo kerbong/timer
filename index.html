@@ -19,6 +19,7 @@
       id="switch"
       onclick="switchHandler()"
       title="스톱워치와 타이머 보기를 전환할 수 있어요!"
+      name="타이머"
     >
       ⏱️ 보기
     </button>
@@ -29,7 +30,13 @@
     >
       🔔 알림
     </button>
-    <div class="container">
+    <!-- <div class="size-controls">
+  <button onclick="setSize('small')">작게</button>
+  <button onclick="setSize('medium')">보통</button>
+  <button onclick="setSize('large')">크게</button>
+    </div> -->
+
+    <div class="container responsive">
       <div class="circle">
         <svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
           <g transform="translate(110,110)">
@@ -60,7 +67,7 @@
         </div>
       </div>
 
-      <div class="flex-center">
+      <div class="flex-center" style="position: absolute; width: 50%">
         <div class="controlls">
           <div class="display-remain-time">01:00</div>
           <div class="btns">
@@ -70,16 +77,26 @@
         </div>
       </div>
       <div class="minute-btns">
-        <button class="minute-btn" onclick="setMinute(1)">1분</button>
-        <button class="minute-btn" onclick="setMinute(3)">3분</button>
-        <button class="minute-btn" onclick="setMinute(5)">5분</button>
-        <button class="minute-btn" onclick="setMinute(10)">10분</button>
-        <button class="minute-btn" onclick="setMinute(20)">20분</button>
+        <button
+          class="minute-btn"
+          id="hide-btn"
+          title="분 추가 버튼들을 숨기기/보이기 가능해요!"
+          onclick="toggleButtons()"
+        >
+          🌚 숨김
+        </button>
+        <div class="minutes-add" id="minutes-container">
+          <button class="minute-btn" onclick="setMinute(1)">1분</button>
+          <button class="minute-btn" onclick="setMinute(3)">3분</button>
+          <button class="minute-btn" onclick="setMinute(5)">5분</button>
+          <button class="minute-btn" onclick="setMinute(10)">10분</button>
+          <button class="minute-btn" onclick="setMinute(20)">20분</button>
+        </div>
       </div>
-      <!-- 할일 목록 -->
+
       <div id="todo-div"></div>
-      <!-- 인풋창 -->
     </div>
+
     <div id="stopWatch-div">
       <div class="stopWatch">
         <h1 class="h1">
@@ -89,7 +106,7 @@
         </h1>
         <div
           class="flex-center"
-          style="width: 40vw; justify-content: space-evenly; height: 15vw"
+          style="width: 40vw; justify-content: space-evenly; height: 5vw"
         >
           <button
             id="startStopButton"
@@ -121,7 +138,7 @@
       <button
         id="noiseBtn"
         onclick="control()"
-        title="소곤소곤 기능을 켜고 끌 수 있어요!"
+        title="소곤소곤 기능(소음측정)을 사용해요!"
       >
         소곤소곤 🤫
       </button>

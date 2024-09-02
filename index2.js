@@ -36,6 +36,17 @@ const watchRecordBtn = document.getElementById("recordButton");
 // 입력 내용 배열
 const inputs = [];
 
+stopWatchDiv.addEventListener("resize", function () {
+  const svgElement = stopWatchDiv.querySelector("svg");
+  if (svgElement) {
+    // 부모 요소의 크기에 따라 SVG의 크기를 재조정
+    const parentWidth = stopWatchDiv.clientWidth;
+    const parentHeight = stopWatchDiv.clientHeight;
+    svgElement.style.width = parentWidth + "px";
+    svgElement.style.height = parentHeight + "px";
+  }
+});
+
 // 입력 추가 버튼 클릭 이벤트 처리
 addForm.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -51,8 +62,24 @@ addForm.addEventListener("submit", (e) => {
       if (index > -1) {
         inputs.splice(index, 1); // 배열에서도 제거
       }
+      // 만약.. 첫번째 요소가 있으면...
+      // inputList의 첫 번째 li 태그 찾기
+      // inputList의 첫 번째 li 태그 찾기
+      const firstLi = inputList.querySelector("li:first-child");
+      const hideBtn = document.getElementById("hide-btn");
+      // 첫 번째 li 태그가 없고 현재 버튼이 숨김상태면..
+      if (firstLi && hideBtn.textContent === "🌞 보기") {
+        firstLi.style.marginLeft = "10vw";
+      }
     });
-    if (switchBtn.innerText === "스톱워치 보기") {
+    if (switchBtn.name === "타이머") {
+      // inputList의 첫 번째 li 태그 찾기
+      const firstLi = inputList.querySelector("li:first-child");
+      const hideBtn = document.getElementById("hide-btn");
+      // 첫 번째 li 태그가 없고 현재 버튼이 숨김상태면..
+      if (!firstLi && hideBtn.textContent === "🌞 보기") {
+        li.style.marginLeft = "10vw";
+      }
       inputList.appendChild(li);
     } else {
       inputWatchList.appendChild(li);
@@ -65,12 +92,14 @@ addForm.addEventListener("submit", (e) => {
 const switchHandler = () => {
   if (switchBtn.innerText === "⏱️ 보기") {
     switchBtn.innerText = "⏳ 보기";
-    containerDiv.style.display = "none";
     stopWatchDiv.style.display = "flex";
+    containerDiv.style.display = "none";
+    switchBtn.name = "스톱워치";
   } else {
     switchBtn.innerText = "⏱️ 보기";
     containerDiv.style.display = "flex";
     stopWatchDiv.style.display = "none";
+    switchBtn.name = "타이머";
   }
 };
 
@@ -328,13 +357,73 @@ function control() {
   if (noiseOn) {
     stop();
     controlButton.innerText = "소곤소곤 🤫";
+    controlButton.title = "소곤소곤 기능(소음측정)을 사용해요!";
     noiseOn = false;
     volBtnsDiv.style.display = "none";
   } else {
     start();
     controlButton.innerText = "평소처럼 😊";
+    controlButton.title = "소곤소곤 기능(소음측정)을 꺼요!";
     volBtnsDiv.style.display = "flex";
     noiseOn = true;
+  }
+}
+
+function setSize(size) {
+  const container = document.querySelector(".container");
+
+  // 모든 크기 클래스를 제거
+  container.classList.remove("small", "medium", "large", "responsive");
+
+  // 특정 크기로 변경
+  if (size === "small") {
+    container.classList.add("small");
+  } else if (size === "medium") {
+    container.classList.add("medium");
+  } else if (size === "large") {
+    container.classList.add("large");
+  } else if (size === "responsive") {
+    container.classList.add("responsive");
+  }
+}
+
+function toggleButtons() {
+  const hideBtn = document.getElementById("hide-btn");
+  const minutesContainer = document.getElementById("minutes-container");
+  const isCollapsed = minutesContainer.classList.contains("collapsed");
+
+  // inputList의 첫 번째 li 태그 찾기
+  const firstLi = inputList.querySelector("li:first-child");
+
+  // 버튼 보임 상태
+  if (isCollapsed) {
+    minutesContainer.classList.remove("collapsed");
+    hideBtn.textContent = "🌚 숨김";
+
+    if (switchBtn?.innerText === "⏱️ 보기") {
+      inputList.classList.remove("ml10vw");
+      inputList.style.width = "43vw";
+    }
+
+    // 첫 번째 li 태그의 왼쪽 마진 제거
+    if (firstLi) {
+      firstLi.style.marginLeft = "0";
+    }
+
+    // 버튼 숨김 상태
+  } else {
+    minutesContainer.classList.add("collapsed");
+    hideBtn.textContent = "🌞 보기";
+
+    if (switchBtn?.innerText === "⏱️ 보기") {
+      inputList.classList.add("ml10vw");
+      inputList.style.width = "52vw";
+    }
+
+    // 첫 번째 li 태그에 왼쪽 마진 추가
+    if (firstLi) {
+      firstLi.style.marginLeft = "10vw";
+    }
   }
 }
 

@@ -3,6 +3,7 @@
 body {
   display: flex;
   flex-direction: column;
+  margin: 15px 0 0 0;
 }
 
 :root {
@@ -10,6 +11,7 @@ body {
   --font-size-md: 3.5vw;
   --font-size-sm: 2.5vw;
   --font-size-xs: 2vw;
+  --font-size-2xs: 1.5vw;
   --padding-btn: 1vw;
   --margin-btn: 1vw;
 }
@@ -62,16 +64,10 @@ button[data-setter]:hover {
   height: auto;
 }
 
-.container {
-  margin-left: 15px;
-}
-
 .setters {
   position: absolute;
   left: -35.5vw;
-
   top: 7.5vw;
-
   width: 22vw;
   display: flex;
   justify-content: space-between;
@@ -81,7 +77,6 @@ button[data-setter]:hover {
   /* float: left; */
   margin-right: 0vw;
   width: 10.5vw;
-
   justify-content: space-around;
 }
 .seconds-set {
@@ -89,7 +84,6 @@ button[data-setter]:hover {
   /* float: left; */
   margin-right: 0vw;
   width: 10.5vw;
-
   justify-content: space-around;
 }
 .controlls {
@@ -102,7 +96,8 @@ button[data-setter]:hover {
   flex-direction: column;
   align-items: center;
   width: 22vw;
-  left: -35.5vw;
+  left: 50%;
+  transform: translateX(-50%);
 }
 .display-remain-time {
   font-family: "Roboto";
@@ -196,42 +191,51 @@ button[data-setter]:hover {
 }
 .minute-btns {
   display: flex;
-
-  width: 15vw;
+  width: 10vw;
   flex-direction: column;
   margin-left: -5vw;
   justify-content: flex-start;
+  z-index: 100;
 }
 .minute-btn {
   padding: var(--padding-btn);
-
   cursor: pointer;
   border-width: 0;
   background-color: #b6b6b6;
   color: whitesmoke;
   font-weight: bold;
-
   letter-spacing: 1px;
   margin: var(--margin-btn);
-  font-size: var(--font-size-sm);
-  width: 10vw;
-  border-radius: 10px;
+  font-size: var(--font-size-2xs);
+  border-radius: 20px;
+  width: auto;
+  border-radius: 30px;
+}
+
+.showHidden-btn {
+  display: none;
+  height: auto;
+  position: absolute;
+  /* width: 45vw; */
+  left: 38vw;
 }
 
 #todo-div {
-  width: 31vw;
-  padding-left: 3vw;
+  width: 43vw;
+  padding-left: 1vw;
+  overflow-x: hidden; /* x축 스크롤 방지 */
+  word-wrap: break-word; /* 긴 텍스트 줄바꿈 */
 }
 
 #noise-div {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  margin: 25px;
+  margin: 15px;
   background-color: lightgray;
-  padding: 1.5vw;
+  padding: 1vw;
   width: auto;
-  border-radius: 3vw;
+  border-radius: 5vw;
 }
 
 #volBtns {
@@ -243,15 +247,17 @@ button[data-setter]:hover {
   width: 95vw;
   display: flex;
   flex-wrap: wrap;
+  margin-top: 20px;
 }
 
 #noiseBtn {
-  border-radius: 10px;
+  border-radius: 35px;
   font-size: var(--font-size-xs);
   margin: 1vw;
-  padding: 2vw;
+  padding: 1.5vw;
   border: 0;
   background-color: whitesmoke;
+  cursor: pointer;
 }
 
 #warningDiv {
@@ -345,16 +351,25 @@ button[data-setter]:hover {
   opacity: 0.8;
 }
 
+#hide-btn:hover,
+.minute-btn:hover {
+  border: 0.2vw solid black;
+  padding: 0.9vw;
+}
+
 #stopWatch-div {
   display: none;
 }
 
 li {
   list-style: none;
-  word-break: keep-all;
+  word-break: break-word; /* 단어가 길 경우 자동 줄바꿈 */
+  overflow-wrap: break-word; /* 단어가 길어서 넘칠 경우 강제로 줄바꿈 */
   cursor: pointer;
-  padding: 1vw;
+  padding: 0.5vw;
   font-size: 4vw;
+  max-width: 100%; /* li의 최대 너비를 부모 컨테이너의 너비로 제한 */
+  box-sizing: border-box; /* 패딩을 포함하여 크기 제한 */
 }
 
 li:hover {
@@ -438,4 +453,33 @@ li:hover {
   padding: 0;
   background-color: inherit;
   border: 0;
+}
+
+.minutes-add {
+  overflow: hidden;
+  transition: transform 0.5s ease, opacity 0.5s ease, max-height 0.5s ease;
+  transform: translateY(0);
+  opacity: 1;
+  max-height: 500px; /* 초기 최대 높이를 버튼 컨테이너에 맞게 설정 */
+}
+
+.minutes-add.collapsed {
+  transform: translateY(-20px); /* 위로 살짝 올라가면서 사라지도록 설정 */
+  opacity: 0;
+  max-height: 0;
+  pointer-events: none; /* 사라지는 동안 클릭 방지 */
+}
+
+.minute-btns {
+  position: relative;
+}
+
+#hide-btn {
+  z-index: 12;
+  position: relative;
+  background-color: #f7958e;
+}
+
+.ml10vw {
+  margin-left: -10vw;
 }
