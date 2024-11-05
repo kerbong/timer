@@ -14,7 +14,9 @@
   </head>
   <body>
     <div id="warningDiv">🤫 소음발생! 🤫</div>
-
+    <button id="toggleInput" onclick="toggleInputField()">
+      📝 입력 칸 숨기기
+    </button>
     <button
       id="switch"
       onclick="switchHandler()"
@@ -23,6 +25,7 @@
     >
       ⏱️ 보기
     </button>
+
     <button
       id="left-time"
       onclick="leftTimeHandler()"
@@ -54,21 +57,20 @@
           </g>
         </svg>
       </div>
-      <div class="flex-center">
-        <div class="setters">
-          <div class="minutes-set">
-            <button data-setter="minutes-plus" title="1분 추가">+</button>
-            <button data-setter="minutes-minus" title="1분 빼기">-</button>
-          </div>
-          <div class="seconds-set">
-            <button data-setter="seconds-plus" title="10초 추가">+</button>
-            <button data-setter="seconds-minus" title="10초 빼기">-</button>
-          </div>
-        </div>
-      </div>
 
       <div class="flex-center" style="position: absolute; width: 50%">
         <div class="controlls">
+          <div class="setters">
+            <div class="minutes-set">
+              <button data-setter="minutes-plus" title="1분 추가">+</button>
+              <button data-setter="minutes-minus" title="1분 빼기">-</button>
+            </div>
+            <div class="seconds-set">
+              <button data-setter="seconds-plus" title="10초 추가">+</button>
+              <button data-setter="seconds-minus" title="10초 빼기">-</button>
+            </div>
+          </div>
+
           <div class="display-remain-time">01:00</div>
           <div class="btns">
             <button class="play" id="pause"></button>

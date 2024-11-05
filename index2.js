@@ -68,18 +68,18 @@ addForm.addEventListener("submit", (e) => {
       const firstLi = inputList.querySelector("li:first-child");
       const hideBtn = document.getElementById("hide-btn");
       // 첫 번째 li 태그가 없고 현재 버튼이 숨김상태면..
-      if (firstLi && hideBtn.textContent === "🌞 보기") {
-        firstLi.style.marginLeft = "10vw";
-      }
+      // if (firstLi && hideBtn.textContent === "🌞 보기") {
+      //   firstLi.style.marginLeft = "10vw";
+      // }
     });
     if (switchBtn.name === "타이머") {
       // inputList의 첫 번째 li 태그 찾기
       const firstLi = inputList.querySelector("li:first-child");
       const hideBtn = document.getElementById("hide-btn");
       // 첫 번째 li 태그가 없고 현재 버튼이 숨김상태면..
-      if (!firstLi && hideBtn.textContent === "🌞 보기") {
-        li.style.marginLeft = "10vw";
-      }
+      // if (!firstLi && hideBtn.textContent === "🌞 보기") {
+      //   li.style.marginLeft = "10vw";
+      // }
       inputList.appendChild(li);
     } else {
       inputWatchList.appendChild(li);
@@ -314,6 +314,10 @@ function playWarningSound() {
 
 // 볼륨 체크 함수
 function checkVolume() {
+  if (!javascriptNode) {
+    console.log("볼륨체크 함수에 문제가 있어요!");
+    return;
+  }
   javascriptNode.onaudioprocess = function () {
     var array = new Uint8Array(analyser.frequencyBinCount);
     analyser.getByteFrequencyData(array);
@@ -331,7 +335,7 @@ function checkVolume() {
     // 1초마다 평균 볼륨 계산 및 출력
     if (volumeCount >= 21) {
       // AudioContext의 sampleRate는 기본적으로 44100Hz이고, bufferSize가 1024라면 약 43회 호출로 1초
-      console.log(Math.round(volumeSum / volumeCount));
+      // console.log(Math.round(volumeSum / volumeCount));
       volumeSum = 0;
       volumeCount = 0;
     }
@@ -355,13 +359,19 @@ function control() {
   const controlButton = document.getElementById("noiseBtn");
   const volBtnsDiv = document.getElementById("volBtns");
   if (noiseOn) {
-    stop();
+    try {
+      stop();
+    } catch (error) {
+      console.log(error);
+    }
+
     controlButton.innerText = "소곤소곤 🤫";
     controlButton.title = "소곤소곤 기능(소음측정)을 사용해요!";
     noiseOn = false;
     volBtnsDiv.style.display = "none";
   } else {
     start();
+
     controlButton.innerText = "평소처럼 😊";
     controlButton.title = "소곤소곤 기능(소음측정)을 꺼요!";
     volBtnsDiv.style.display = "flex";
@@ -402,7 +412,7 @@ function toggleButtons() {
 
     if (switchBtn?.innerText === "⏱️ 보기") {
       inputList.classList.remove("ml10vw");
-      inputList.style.width = "43vw";
+      inputList.style.width = "40vw";
     }
 
     // 첫 번째 li 태그의 왼쪽 마진 제거
@@ -416,14 +426,14 @@ function toggleButtons() {
     hideBtn.textContent = "🌞 보기";
 
     if (switchBtn?.innerText === "⏱️ 보기") {
-      inputList.classList.add("ml10vw");
-      inputList.style.width = "52vw";
+      // inputList.classList.add("ml10vw");
+      inputList.style.width = "40vw";
     }
 
     // 첫 번째 li 태그에 왼쪽 마진 추가
-    if (firstLi) {
-      firstLi.style.marginLeft = "10vw";
-    }
+    // if (firstLi) {
+    //   firstLi.style.marginLeft = "6vw";
+    // }
   }
 }
 
@@ -645,3 +655,29 @@ const getCentiseconds = (record) => {
     return `0${time % 100}`.slice(-2);
   }
 };
+
+function toggleInputField() {
+  const controllsDiv = document.querySelector(".controlls");
+  const timerContainer = document.querySelector(".container");
+  const toggleButton = document.getElementById("toggleInput");
+  const inputForm = document.getElementById("input-form");
+  const todoDiv = document.getElementById("todo-div");
+
+  //메모한 것들이 안보이면 보이도록 바꾸고
+  if (todoDiv.style.display === "none") {
+    // 입력 칸 보이기
+    todoDiv.style.display = "inherit";
+    toggleButton.innerText = "📝 입력 칸 숨기기";
+    timerContainer.style.justifyContent = "left";
+    controllsDiv.style.left = "25vw";
+    inputForm.style.display = "inherit";
+    // 안보이게 바꾸고 시계를 가운데로
+  } else {
+    // 입력 칸 숨기기
+    todoDiv.style.display = "none";
+    timerContainer.style.justifyContent = "center";
+    controllsDiv.style.left = "22vw";
+    toggleButton.innerText = "📝 입력 칸 보이기";
+    inputForm.style.display = "none";
+  }
+}
